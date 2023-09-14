@@ -133,6 +133,9 @@ if (WFLAG)
   target_compile_options(om4 PRIVATE -w)
 endif (WFLAG)
 
+install(TARGETS om4 DESTINATION bin)
+
+
 # Local Variables:
 # tab-width: 8
 # mode: cmake
