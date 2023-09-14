@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/ibara/m4.svg?branch=master)](https://travis-ci.org/ibara/m4)
-
 m4
 ==
 `m4`, or `om4`, is a portable version of the OpenBSD m4 program.
