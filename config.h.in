@@ -1,0 +1,19 @@
+
+#cmakedefine HAVE___DEAD2
+#cmakedefine HAVE_NORETURN
+#ifndef __dead
+#  if HAVE___DEAD2
+#    define __dead __dead2
+#  elif HAVE_NORETURN
+#    define __dead __attribute__((__noreturn__))
+#  else
+#    define __dead
+#  endif
+#endif
+
+#cmakedefine HAVE_OHASH
+#cmakedefine HAVE_PLEDGE
+#cmakedefine HAVE_REALLOCARRAY
+#cmakedefine HAVE_STRLCPY
+#cmakedefine HAVE_STRTONUM
+
