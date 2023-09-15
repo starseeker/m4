@@ -1,4 +1,4 @@
-/*	$OpenBSD: main.c,v 1.87 2017/06/15 13:48:42 bcallah Exp $	*/
+/*	$OpenBSD: main.c,v 1.88 2022/12/04 23:50:48 cheloha Exp $	*/
 /*	$NetBSD: main.c,v 1.12 1997/02/08 23:54:49 cgd Exp $	*/
 
 /*-
@@ -138,6 +138,9 @@ struct keyblk keywrds[] = {	/* m4 keywords to be installed */
 
 #define MAXKEYS	(sizeof(keywrds)/sizeof(struct keyblk))
 
+extern int optind;
+extern char *optarg;
+
 #define MAXRECORD 50
 static struct position {
 	char *name;
@@ -227,7 +230,7 @@ main(int argc, char *argv[])
 		case 'o':
 			trace_file(optarg);
                         break;
-		case '?':
+		default:
 			usage();
 		}
 
