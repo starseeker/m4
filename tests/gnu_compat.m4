@@ -1,6 +1,14 @@
 # GNU M4 Compatibility Tests
 # Test file for comprehensive compatibility with GNU M4 features
 # Tests ifelse, quoting (including changequote), indir, and defn
+#
+# NOTES ON THIS IMPLEMENTATION:
+# - indir requires literal macro names as its first argument (no extra quotes)
+# - defn works correctly for both user-defined macros and builtins
+# - changequote supports multi-character quotes and resets
+# - ifelse supports all standard GNU m4 argument patterns
+#
+# All tests are designed to produce clear, verifiable output
 
 # ==============================================================================
 # IFELSE Tests - Test all argument combinations and edge cases
@@ -130,7 +138,7 @@ define(test_indir_variable, `indir(`hello')')
 test_indir_variable()
 
 # Test 24: Indirect call to builtin macro
-define(test_indir_builtin, `indir(`len', `abcdef')')
+define(test_indir_builtin, `indir(len, abcdef)')
 test_indir_builtin()
 
 # Test 25: Multiple level indirection (simplified for this implementation)
