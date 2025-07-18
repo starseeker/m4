@@ -12,6 +12,7 @@ This directory contains macro files from the Intel SPMD Program Compiler (ISPC) 
 These files were obtained unmodified from the ISPC project:
 - Repository: https://github.com/ispc/ispc
 - Original paths: 
+  - `builtins/util..m4`
   - `builtins/util-xe.m4`
   - `builtins/svml.m4`
 - License: BSD-3-Clause (Intel Corporation)
@@ -27,14 +28,17 @@ To test compatibility between GNU m4 and starseeker/m4:
 ### Basic Processing Test
 ```bash
 # Test with GNU m4
+m4 util.m4 > output_gnu_util.txt
 m4 util-xe.m4 > output_gnu_util-xe.txt
 m4 svml.m4 > output_gnu_svml.txt
 
 # Test with starseeker/m4 (om4)
+om4 util.m4 > output_gnu_util.txt
 om4 util-xe.m4 > output_om4_util-xe.txt
 om4 svml.m4 > output_om4_svml.txt
 
 # Compare outputs
+diff output_gnu_util.txt output_om4_util.txt
 diff output_gnu_util-xe.txt output_om4_util-xe.txt
 diff output_gnu_svml.txt output_om4_svml.txt
 ```

@@ -215,5 +215,59 @@ define(complex_test, `ifelse($1, match, `Found: defn(`hello')', `Not found')')
 complex_test(`match')
 complex_test(`nomatch')
 
+# ==============================================================================
+# ISPC util.m4-specific tests
+# ==============================================================================
+
+# Test: Recursive macro with argument shifting (argn)
+define(test_argn_10, `argn(10, a, b, c, d, e, f, g, h, i, j, k, l)')
+# Should select the 10th argument ("j")
+test_argn_10()
+
+# Test: Deep recursion in argument selection (argn 15)
+define(test_argn_15, `argn(15, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p)')
+# Should select the 15th argument ("o")
+test_argn_15()
+
+# Test: _VECTOR_ELEMENTS recursion and eval
+define(test_vector_elements_4, `_VECTOR_ELEMENTS(4, foo, 1)')
+test_vector_elements_4()
+define(test_vector_elements_8, `_VECTOR_ELEMENTS(8, bar, 1)')
+test_vector_elements_8()
+
+# Test: ROTATE_1_CONST macro
+define(test_rotate1const_4, `ROTATE_1_CONST(4, i32)')
+test_rotate1const_4()
+define(test_rotate1const_8, `ROTATE_1_CONST(8, i16)')
+test_rotate1const_8()
+
+# Test: ALL_ON_MASK and MASK_HIGH_BIT_ON with WIDTH=32 and WIDTH=64
+define(WIDTH, 32)
+define(test_all_on_mask_32, `ALL_ON_MASK')
+define(test_high_bit_on_32, `MASK_HIGH_BIT_ON')
+test_all_on_mask_32()
+test_high_bit_on_32()
+undefine(`WIDTH')
+define(WIDTH, 64)
+define(test_all_on_mask_64, `ALL_ON_MASK')
+define(test_high_bit_on_64, `MASK_HIGH_BIT_ON')
+test_all_on_mask_64()
+test_high_bit_on_64()
+undefine(`WIDTH')
+
+# Test: ifelse, eval, and quoting for error handling
+define(test_reduce_func_err, `reduce_func(foo, bar, baz)')
+# Should print error and exit if WIDTH is not set
+test_reduce_func_err()
+
+# Test: Macro overloading by argument count
+define(test_arg_count_4, `ifelse($#, 4, FOUR, NOT_FOUR)')
+test_arg_count_4(a, b, c, d)
+test_arg_count_4(a, b, c)
+
+# Test: Use of 'undef' as an argument (should be treated as literal, not macro)
+define(test_undef_literal, `foo(undef, bar)')
+test_undef_literal()
+
 # End of tests
 # Tests completed. Each test should produce clear, verifiable output.
