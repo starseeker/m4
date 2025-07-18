@@ -132,6 +132,8 @@ endif (M_LIBRARY)
 if (WFLAG)
   target_compile_options(om4 PRIVATE -w)
 endif (WFLAG)
+# Enable extended GNU m4 compatibility features
+target_compile_definitions(om4 PRIVATE -DEXTENDED)
 
 install(TARGETS om4 DESTINATION bin)
 
