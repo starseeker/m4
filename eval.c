@@ -526,7 +526,64 @@ expand_builtin(const char *argv[], int argc, int td)
 }
 
 /*
+ * preprocess_macro_args - preprocess macro definition to handle multi-digit arguments
+ * Converts patterns like $10, $11, etc. to internal format for processing
+ */
+static char *
+preprocess_macro_args(const char *defn)
+{
+	const char *src = defn;
+	char *result, *dst;
+	size_t len = strlen(defn);
+	size_t max_len = len * 2; /* Conservative estimate for expansion */
+	int i;
+	
+	result = malloc(max_len + 1);
+	if (result == NULL)
+		return NULL;
+	
+	dst = result;
+	
+	while (*src) {
+		if (*src == ARGFLAG && src[1] >= '0' && src[1] <= '9') {
+			/* Found argument reference - check if multi-digit */
+			const char *digit_start = src + 1;
+			const char *digit_end = digit_start;
+			int argno = 0;
+			
+			/* Parse the complete number */
+			while (*digit_end >= '0' && *digit_end <= '9') {
+				argno = argno * 10 + (*digit_end - '0');
+				digit_end++;
+			}
+			
+			if (digit_end > digit_start + 1) {
+				/* Multi-digit argument - convert to single-char representation */
+				/* Use high ASCII characters to represent arguments 10-99 */
+				if (argno >= 10 && argno <= 99) {
+					*dst++ = ARGFLAG;
+					*dst++ = (char)(128 + argno); /* Map 10->138, 11->139, etc. */
+					src = digit_end;
+				} else {
+					/* Single digit or out of range - copy as-is */
+					*dst++ = *src++;
+				}
+			} else {
+				/* Single digit - copy as-is */
+				*dst++ = *src++;
+			}
+		} else {
+			*dst++ = *src++;
+		}
+	}
+	*dst = '\0';
+	return result;
+}
+
+/*
  * expand_macro - user-defined macro expansion
+ * Enhanced to support multi-digit argument numbers ($10, $11, ..., $99, etc.)
+ * for GNU m4 compatibility.
  */
 void
 expand_macro(const char *argv[], int argc)
@@ -535,8 +592,16 @@ expand_macro(const char *argv[], int argc)
 	const char *p;
 	int n;
 	int argno;
+	char *processed_defn = NULL;
 
-	t = argv[0];		       /* defn string as a whole */
+	/* Preprocess macro definition to handle multi-digit arguments */
+	processed_defn = preprocess_macro_args(argv[0]);
+	if (processed_defn == NULL) {
+		/* Fall back to original definition if preprocessing fails */
+		t = argv[0];
+	} else {
+		t = processed_defn;
+	}
 	p = t;
 	while (*p)
 		p++;
@@ -586,8 +651,16 @@ expand_macro(const char *argv[], int argc)
 				}
                                 break;
 			default:
-				PUSHBACK(*p);
-				PUSHBACK('$');
+				/* Check for multi-digit argument (high ASCII range) */
+				if ((unsigned char)*p >= 138 && (unsigned char)*p <= 227) {
+					/* Map back: 138->10, 139->11, ..., 227->99 */
+					argno = (unsigned char)*p - 128;
+					if (argno < argc - 1)
+						pbstr(argv[argno + 1]);
+				} else {
+					PUSHBACK(*p);
+					PUSHBACK('$');
+				}
 				break;
 			}
 			p--;
@@ -596,6 +669,10 @@ expand_macro(const char *argv[], int argc)
 	}
 	if (p == t)		       /* do last character */
 		PUSHBACK(*p);
+	
+	/* Clean up preprocessed definition if allocated */
+	if (processed_defn != NULL)
+		free(processed_defn);
 }
 
 
