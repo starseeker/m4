@@ -914,12 +914,18 @@ dodiv(int n)
 	if (n < 0)
 		n = 0;		       /* bitbucket */
 	if (outfile[n] == NULL) {
+#ifdef _WIN32
+		outfile[n] = tmpfile();
+		if (outfile[n] == NULL)
+			err(1, "cannot create diversion file");
+#else
 		char fname[] = _PATH_DIVNAME;
 
 		if ((fd = mkstemp(fname)) == -1 ||
 		    unlink(fname) == -1 ||
 		    (outfile[n] = fdopen(fd, "w+")) == NULL)
 			err(1, "%s: cannot divert", fname);
+#endif
 	}
 	active = outfile[n];
 }

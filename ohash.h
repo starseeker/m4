@@ -56,7 +56,10 @@ unsigned int ohash_lookup_interval(struct ohash *, const char *,
 	    const char *, uint32_t);
 unsigned int ohash_lookup_memory(struct ohash *, const char *,
 	    size_t, uint32_t)
-		__attribute__ ((__bounded__(__string__,2,3)));
+#ifdef __GNUC__
+		__attribute__ ((__bounded__(__string__,2,3)))
+#endif
+		;
 void *ohash_find(struct ohash *, unsigned int);
 void *ohash_remove(struct ohash *, unsigned int);
 void *ohash_insert(struct ohash *, unsigned int, void *);

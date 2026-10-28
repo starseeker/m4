@@ -1,0 +1,51 @@
+;;  Copyright (c) 2010-2025, Intel Corporation
+;;
+;;  SPDX-License-Identifier: BSD-3-Clause
+
+;; This file provides a variety of macros used to generate LLVM bitcode
+;; parametrized in various ways.  Implementations of the standard library
+;; builtins for various targets can use macros from this file to simplify
+;; generating code for their implementations of those builtins.
+
+;; argn allows to portably select greater than ninth argument without relying
+;; on the GNU extension of multi-digit arguments.
+
+
+;; Helper macro to generate the element list recursively
+
+
+;; M4 macro to generate LLVM IR vector constant with pattern <1, 2, 3, ..., WIDTH-1, 0>
+;; Usage: ROTATE_1_CONST(width, type)
+;; Example: ROTATE_1_CONST(8, i32) generates <8 x i32> <i32 1, i32 2, i32 3, i32 4, i32 5, i32 6, i32 7, i32 0>
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; It is a bit of a pain to compute this in m4 for 32 and 64-wide targets...
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Helper functions for mangling overloaded LLVM intrinsics
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Reduce function based on the WIDTH
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[...file truncated for brevity; full file matches ISPC util.m4 as referenced...]

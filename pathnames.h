@@ -35,4 +35,8 @@
  *	@(#)pathnames.h	8.1 (Berkeley) 6/6/93
  */
 
+#ifdef _WIN32
+#define _PATH_DIVNAME	"m4.XXXXXXXXXX"
+#else
 #define _PATH_DIVNAME	"/tmp/m4.0XXXXXXXXXX"	/* unix diversion files */
+#endif

@@ -1,0 +1,85 @@
+
+;; util-xe.m4 - macros for Xe (Intel GPU) code generation
+
+;; print_xe_result_declaration : print declaration of the result variable for Xe
+;; if it is struct type, call utility function.
+;; $1 - variable name
+;; $2 - type, llvm type, like float, <4 x float>, double, <2 x double>, etc.
+
+
+;; load_xe_result : load result for Xe
+;; $1 - variable name
+;; $2 - type
+
+
+;; load_xe_result_wide : load result for Xe, uses 16 byte alignment
+;; $1 - variable name
+;; $2 - type
+
+
+;; mask_to_i8_xe : convert llvm bool vector to i8 vector for Xe ISA
+;; $1 - variable name to store result
+;; $2 - bool type, like <4 x i1>, <8 x i1>, <16 x i1>, etc.
+;; $3 - variable name to convert
+
+')
+
+;; i8_to_mask_xe : convert i8 vector to llvm bool vector for Xe ISA
+;; $1 - variable name to store result  
+;; $2 - i8 type, like <4 x i8>, <8 x i8>, <16 x i8>, etc.
+;; $3 - variable name to convert
+
+
+;; kn1_binop_xe : apply binary operation for knightsmill masks for Xe
+;; $1 - operation (and, or, xor)  
+;; $2 - mask width (32 or 64)
+;; $3 - first operand variable name
+;; $4 - second operand variable name
+;; $5 - result variable name
+
+
+;; kn1_notmask_xe : apply not operation to mask for Xe
+;; $1 - mask width (32 or 64)
+;; $2 - operand variable name  
+;; $3 - result variable name
+
+
+;; xe_svml_unary_func : unary function call for Xe SVML
+;; $1 - result variable name
+;; $2 - function call, like "call <8 x float> @__svml_exp8(...)"
+
+
+;; xe_svml_binary_func : binary function call for Xe SVML
+;; $1 - result variable name  
+;; $2 - function call, like "call <8 x float> @__svml_pow8(...)"
+
+
+;; stdlib_strided_load_xe : perform strided load using stdlib for Xe
+;; $1 - result variable name
+;; $2 - return type
+;; $3 - variable arguments (pointer, stride, etc.)
+
+
+;; stdlib_strided_store_xe : perform strided store using stdlib for Xe  
+;; $1 - variable arguments (value, pointer, stride, etc.)
+
+
+;; packed_load_xe : perform packed load for Xe
+;; $1 - result variable name
+;; $2 - return type
+;; $3 - variable arguments
+
+
+;; packed_store_xe : perform packed store for Xe
+;; $1 - variable arguments
+
+
+;; gather_xe : perform gather operation for Xe
+;; $1 - result variable name
+;; $2 - return type
+;; $3 - variable arguments
+
+
+;; scatter_xe : perform scatter operation for Xe
+;; $1 - variable arguments
+

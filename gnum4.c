@@ -21,10 +21,14 @@
  */
 
 #include <sys/types.h>
+#ifndef _WIN32
 #include <sys/wait.h>
+#endif
 #include <ctype.h>
 #include <err.h>
+#ifndef _WIN32
 #include <paths.h>
+#endif
 #include <regex.h>
 #include <stdarg.h>
 #include <stddef.h>
@@ -40,7 +44,11 @@
 #include "extern.h"
 
 
+#ifdef OM4_GNU_COMPAT_DEFAULT
+int mimic_gnu = 1;
+#else
 int mimic_gnu = 0;
+#endif
 
 /*
  * Support for include path search
@@ -620,6 +628,20 @@ doformat(const char *argv[], int argc)
 void
 doesyscmd(const char *cmd)
 {
+#ifdef _WIN32
+	FILE *pipe;
+	char result[BUFSIZE];
+	size_t count;
+
+	fflush(NULL);
+	pipe = _popen(cmd, "rb");
+	if (pipe == NULL)
+		err(1, "bad pipe");
+	while ((count = fread(result, 1, sizeof(result), pipe)) > 0)
+		addchars(result, count);
+	(void)_pclose(pipe);
+	pbstr(getstring());
+#else
 	int p[2];
 	pid_t cpid;
 	char *argv[4];
@@ -665,6 +687,7 @@ doesyscmd(const char *cmd)
 		}
 		pbstr(getstring());
 	}
+#endif
 }
 
 void
