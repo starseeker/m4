@@ -170,6 +170,11 @@ main(int argc, char *argv[])
 	int n;
 	char *p;
 
+	if (argc > 1 && strcmp(argv[1], "--version") == 0) {
+		printf("m4 (OpenBSD portable) %s\n", OM4_VERSION);
+		return 0;
+	}
+
 #ifdef HAVE_PLEDGE
 	if (pledge("stdio rpath wpath cpath tmppath proc exec", NULL) == -1)
 		err(1, "pledge");

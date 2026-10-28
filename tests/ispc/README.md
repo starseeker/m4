@@ -9,13 +9,18 @@ This directory contains macro files from the Intel SPMD Program Compiler (ISPC) 
 
 ## Origin
 
-These files were obtained unmodified from the ISPC project:
+These files are reduced regression fixtures derived from the ISPC project:
 - Repository: https://github.com/ispc/ispc
-- Original paths: 
-  - `builtins/util..m4`
+- Original paths:
+  - `builtins/util.m4`
   - `builtins/util-xe.m4`
   - `builtins/svml.m4`
 - License: BSD-3-Clause (Intel Corporation)
+
+They intentionally retain only representative macro definitions and
+invocations needed by these tests. They are not snapshots of a complete ISPC
+release; compatibility with complete pinned and current ISPC builtin inputs is
+validated separately when updating this port.
 
 ## Purpose
 

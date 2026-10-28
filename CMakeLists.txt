@@ -2,7 +2,7 @@
 # and released into the Public Domain.
 
 cmake_minimum_required(VERSION 3.12)
-project(OM4 LANGUAGES C CXX)
+project(OM4 VERSION 6.6 LANGUAGES C CXX)
 
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
@@ -138,6 +138,7 @@ include_directories(
   )
 
 add_executable(om4 ${OM4_SRCS})
+target_compile_definitions(om4 PRIVATE OM4_VERSION="${PROJECT_VERSION}")
 if (MSVC)
   target_include_directories(om4 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/compat/win32)
   set_target_properties(om4 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
@@ -161,6 +162,9 @@ install(TARGETS om4 DESTINATION bin)
 
 include(CTest)
 if (BUILD_TESTING)
+  add_test(NAME om4-version COMMAND om4 --version)
+  set_tests_properties(om4-version PROPERTIES
+    PASS_REGULAR_EXPRESSION "m4 \\(OpenBSD portable\\) ${PROJECT_VERSION}")
   foreach(OM4_TEST IN ITEMS ack gnu_compat gnuargs hanoi hash sqroot string test)
     add_test(NAME "om4-${OM4_TEST}"
       COMMAND om4 -g "${CMAKE_CURRENT_SOURCE_DIR}/tests/${OM4_TEST}.m4")
