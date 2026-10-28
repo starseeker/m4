@@ -33,7 +33,8 @@ backwards compatibility.
 
 Licensing
 ---------
-All files are a combination of BSD and ISC licensed files.
+The package license expression is `BSD-3-Clause AND BSD-2-Clause AND ISC`.
+See [LICENSE](LICENSE) for the file-level map, notices, and complete texts.
 
 Get a tarball
 -------------

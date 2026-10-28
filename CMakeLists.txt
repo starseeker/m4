@@ -159,6 +159,7 @@ endif (WFLAG)
 target_compile_definitions(om4 PRIVATE -DEXTENDED)
 
 install(TARGETS om4 DESTINATION bin)
+install(FILES LICENSE DESTINATION share/licenses/${OM4_PROGRAM_NAME})
 
 include(CTest)
 if (BUILD_TESTING)
